@@ -21,6 +21,7 @@ public class ApolloApplication {
   private static final Logger logger = LoggerFactory.getLogger(ApolloApplication.class);
 
   public static void main(String[] args) throws Exception {
+    // KLH: 手动启动多个Spring容器
     /**
      * Common
      */

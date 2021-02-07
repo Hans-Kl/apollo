@@ -42,6 +42,11 @@ public class ReleaseService {
     this.releaseAPI = releaseAPI;
   }
 
+  /**
+   * portal本地不做记录,rpc Admin模块创建release记录
+   * @param model
+   * @return
+   */
   public ReleaseDTO publish(NamespaceReleaseModel model) {
     Env env = model.getEnv();
     boolean isEmergencyPublish = model.isEmergencyPublish();

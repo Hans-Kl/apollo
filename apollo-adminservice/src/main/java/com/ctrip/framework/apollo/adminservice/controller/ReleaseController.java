@@ -98,6 +98,17 @@ public class ReleaseController {
     return BeanUtils.transform(ReleaseDTO.class, release);
   }
 
+  /**
+   * 发布功能实现
+   * @param appId
+   * @param clusterName
+   * @param namespaceName
+   * @param releaseName
+   * @param releaseComment
+   * @param operator
+   * @param isEmergencyPublish
+   * @return
+   */
   @Transactional
   @PostMapping("/apps/{appId}/clusters/{clusterName}/namespaces/{namespaceName}/releases")
   public ReleaseDTO publish(@PathVariable("appId") String appId,
@@ -122,6 +133,7 @@ public class ReleaseController {
     } else {
       messageCluster = clusterName;
     }
+    // TODO: 2021/2/7
     messageSender.sendMessage(ReleaseMessageKeyGenerator.generate(appId, messageCluster, namespaceName),
                               Topics.APOLLO_RELEASE_TOPIC);
     return BeanUtils.transform(ReleaseDTO.class, release);

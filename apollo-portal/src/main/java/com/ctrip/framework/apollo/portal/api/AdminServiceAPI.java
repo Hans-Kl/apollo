@@ -16,7 +16,9 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
-
+/**
+ * klh 所有rpc调用的封装类,相当于remoter
+ */
 @Service
 public class AdminServiceAPI {
 

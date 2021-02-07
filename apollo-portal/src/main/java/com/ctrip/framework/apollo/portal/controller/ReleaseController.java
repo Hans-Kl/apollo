@@ -63,6 +63,7 @@ public class ReleaseController {
     model.setClusterName(clusterName);
     model.setNamespaceName(namespaceName);
 
+    // TODO: 2021/2/5 紧急发布是啥
     if (model.isEmergencyPublish() && !portalConfig.isEmergencyPublishAllowed(Env.valueOf(env))) {
       throw new BadRequestException(String.format("Env: %s is not supported emergency publish now", env));
     }

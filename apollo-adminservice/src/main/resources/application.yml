@@ -2,6 +2,7 @@ spring:
   application:
     name: apollo-adminservice
   profiles:
+    # 根据配置文件后缀选择激活的配置文件
     active: ${apollo_profile}
 
 ctrip:

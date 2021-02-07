@@ -48,15 +48,17 @@ import java.util.Set;
 @RestController
 @RequestMapping("/apps")
 public class AppController {
-
+  // KLH: 所有的成员变量用final修饰,作用是在构造函数执行之后,成员变量不允许再被修改
   private final UserInfoHolder userInfoHolder;
   private final AppService appService;
   private final PortalSettings portalSettings;
-  private final ApplicationEventPublisher publisher;
+  private final ApplicationEventPublisher publisher;// KLH: 注入Spring提供的观察者模式
   private final RolePermissionService rolePermissionService;
   private final RoleInitializationService roleInitializationService;
 
+  // KLH: 使用了Spring推荐的构造方法注入
   public AppController(
+          // KLH: 形参使用final修饰,作用是方法体内不允许修改参数的值
       final UserInfoHolder userInfoHolder,
       final AppService appService,
       final PortalSettings portalSettings,
@@ -105,6 +107,11 @@ public class AppController {
     return appService.findByAppIds(appIds, page);
   }
 
+  /**
+   * 暴露给页面的接口
+   * @param appModel
+   * @return
+   */
   @PreAuthorize(value = "@permissionValidator.hasCreateApplicationPermission()")
   @PostMapping
   public App create(@Valid @RequestBody AppModel appModel) {
@@ -113,12 +120,12 @@ public class AppController {
 
     App createdApp = appService.createAppInLocal(app);
 
+    // KLH: 发布事件,Admin Service监听异步创建admin.app
     publisher.publishEvent(new AppCreationEvent(createdApp));
 
     Set<String> admins = appModel.getAdmins();
     if (!CollectionUtils.isEmpty(admins)) {
-      rolePermissionService
-          .assignRoleToUsers(RoleUtils.buildAppMasterRoleName(createdApp.getAppId()),
+      rolePermissionService.assignRoleToUsers(RoleUtils.buildAppMasterRoleName(createdApp.getAppId()),
               admins, userInfoHolder.getUser().getUserId());
     }
 
